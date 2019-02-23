@@ -16,19 +16,23 @@ class MyNotesTableViewController: UITableViewController {
         super.viewDidLoad()
         self.view.backgroundColor = .white
         
+        
         //self.tableView.isScrollEnabled = false
         self.tableView.allowsSelection = false
         
-        let noteOne = MyNotesClass()
-        noteOne.noteTitle = "note 1 Title"
-        noteOne.noteText = "some text of the note /n not so long max 2 line"
-        let noteTwo = MyNotesClass()
-        noteTwo.noteTitle = "Note 2 Title"
-        noteTwo.noteText = "some text of the note /n not so long max 2 line"
-        
-        
-        notesArray = [noteOne, noteTwo]
+//        var noteOne = MyNotesClass()
+//        noteOne.noteTitle = "note 1 Title"
+//        noteOne.noteText = "some text of the note /n not so long max 2 line"
+//        var noteTwo = MyNotesClass()
+//        noteTwo.noteTitle = "Note 2 Title"
+//        noteTwo.noteText = "some text of the note /n not so long max 2 line"
 //
+//        var noteThree = MyNotesClass()
+//        noteThree.noteTitle = "Whatch a movie"
+//        noteThree.noteText = "watch misssion imposible after 6 pm"
+//
+//        notesArray = [noteOne, noteTwo]
+//notesArray.append(noteThree)
 //        notesArray.append(<#T##newElement: MyNotes##MyNotes#>) .noteTitle = "Title Note"
 //        notesArray[0].noteText = "some text of the note /n not so long max 2 line"
 //
@@ -63,16 +67,16 @@ class MyNotesTableViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         var cell: UITableViewCell?
-        if notesArray.count == 0 {
-         
-            cell =  tableView.dequeueReusableCell(withIdentifier: "emptyCell", for: indexPath)
-        } else if notesArray.count != 0{
+         if notesArray.count > 0{
             
             cell = tableView.dequeueReusableCell(withIdentifier: "notesCell", for: indexPath)
             let textView = cell?.viewWithTag(1000) as! UITextView
             
             textView.text = "\(notesArray[indexPath.row].noteTitle) \n \(notesArray[indexPath.row].noteText)"
             
+         } else {
+            
+            cell =  tableView.dequeueReusableCell(withIdentifier: "emptyCell", for: indexPath)
         }
         
        // Kresztof methode     cell.isUserInteractionEnabled=false
@@ -85,11 +89,15 @@ class MyNotesTableViewController: UITableViewController {
         return 100.0
     }
     
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+    
+    //MARK: FIXME: try to implement this methode only in the case if we got some information in the array. at the currentmoent we have array only in the case of the didLoad methode so now it is not defined  if notesArray.count > 0  {}
+   override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         //tableView.separatorColor = .gray
         //cellDeleteBackground.backgroundColor = UIColor.greenColor()
-        tableView.deleteRows(at: [indexPath], with: .automatic)
-    }
+         if notesArray.count > 0  {tableView.deleteRows(at: [indexPath], with: .automatic)
+    }}
+    
+
     
     
     override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
