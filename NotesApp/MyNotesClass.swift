@@ -14,3 +14,6 @@ class MyNotesClass : NSObject{
     var noteText = ""
     
 }
+
+
+//return (listOfNotes == 0 ? 1 : listOfNotes.count)
