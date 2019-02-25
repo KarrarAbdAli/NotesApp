@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C70256F12223D2CB0018E1C6 /* NewOrEditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C70256F02223D2CB0018E1C6 /* NewOrEditViewController.swift */; };
 		C75359AC221FF2210049F162 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C75359AB221FF2210049F162 /* AppDelegate.swift */; };
 		C75359B1221FF2210049F162 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C75359AF221FF2210049F162 /* Main.storyboard */; };
 		C75359B3221FF2220049F162 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C75359B2221FF2220049F162 /* Assets.xcassets */; };
@@ -16,6 +17,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		C70256F02223D2CB0018E1C6 /* NewOrEditViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewOrEditViewController.swift; sourceTree = "<group>"; };
 		C75359A8221FF2210049F162 /* NotesApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NotesApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C75359AB221FF2210049F162 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		C75359B0221FF2210049F162 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -60,6 +62,7 @@
 				C75359BD221FF3350049F162 /* MyNotesTableViewController.swift */,
 				C75359BF222015EC0049F162 /* MyNotesClass.swift */,
 				C75359AF221FF2210049F162 /* Main.storyboard */,
+				C70256F02223D2CB0018E1C6 /* NewOrEditViewController.swift */,
 				C75359B2221FF2220049F162 /* Assets.xcassets */,
 				C75359B4221FF2220049F162 /* LaunchScreen.storyboard */,
 				C75359B7221FF2220049F162 /* Info.plist */,
@@ -138,6 +141,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C70256F12223D2CB0018E1C6 /* NewOrEditViewController.swift in Sources */,
 				C75359BE221FF3350049F162 /* MyNotesTableViewController.swift in Sources */,
 				C75359C0222015EC0049F162 /* MyNotesClass.swift in Sources */,
 				C75359AC221FF2210049F162 /* AppDelegate.swift in Sources */,
@@ -289,6 +293,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 8HM3X6A6DH;
 				INFOPLIST_FILE = NotesApp/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -307,6 +312,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 8HM3X6A6DH;
 				INFOPLIST_FILE = NotesApp/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
