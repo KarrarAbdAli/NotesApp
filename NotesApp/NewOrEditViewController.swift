@@ -53,6 +53,7 @@ class NewOrEditViewController: UIViewController {
         imageButton5.isHidden = true
         imageButton6.isHidden = true
         
+        print(itemToEdit?.noteTitle)
         
         
     }
