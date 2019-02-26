@@ -11,14 +11,6 @@ import UIKit
 class MyNotesTableViewController: UITableViewController, NewEditDelegateProtocol {
    
     
-    func editExcistingNote(label: UILabel, textView: UITextView) {
-        print("editExcisting...")
-    }
-    
-    func addNewNote(label: UILabel, textView: UITextView) {
-        print("AddnewNote")
-    }
-    
 
     var notesArray: [MyNotesClass] = [MyNotesClass]()
     
@@ -31,17 +23,23 @@ class MyNotesTableViewController: UITableViewController, NewEditDelegateProtocol
         //self.tableView.isScrollEnabled = false
         self.tableView.allowsSelection = true
        // self.tableView.isUserInteractionEnabled = true
+     loadData()
         
-        let noteOne = MyNotesClass()
-        noteOne.noteTitle = "note 1 Title"
-        noteOne.noteText = "some text of the note \n not so long max 2 line"
-        let noteTwo = MyNotesClass()
-        noteTwo.noteTitle = "Note 2 Title"
-        noteTwo.noteText = "some text of the note \n not so long max 2 line"
-
-
-        notesArray = [noteOne, noteTwo]
+        
+        //Now Tring to save and load the adata
+//        let noteOne = MyNotesClass()
+//        noteOne.noteTitle = "note 1 Title"
+//        noteOne.noteText = "some text of the note \n not so long max 2 line"
+//        let noteTwo = MyNotesClass()
+//        noteTwo.noteTitle = "Note 2 Title"
+//        noteTwo.noteText = "some text of the note \n not so long max 2 line"
+//
+//
+//        notesArray = [noteOne, noteTwo]
 //----------------
+        
+        
+        
 //        notesArray.append(MyNotes) .noteTitle = "Title Note"
 //        notesArray[0].noteText = "some text of the note /n not so long max 2 line"
 //
@@ -79,7 +77,10 @@ class MyNotesTableViewController: UITableViewController, NewEditDelegateProtocol
         if notesArray.count == 0 {
          
             cell =  tableView.dequeueReusableCell(withIdentifier: "emptyCell", for: indexPath)
+            tableView.allowsSelection = false
+            
         } else if notesArray.count != 0{
+            tableView.allowsSelection = true
             
             cell = tableView.dequeueReusableCell(withIdentifier: "notesCell", for: indexPath)
             let textLabel = cell?.viewWithTag(1000) as! UILabel
@@ -100,17 +101,37 @@ class MyNotesTableViewController: UITableViewController, NewEditDelegateProtocol
         return (notesArray.count == 0 ? 534.0 :200.0)
     }
     
+    
+    //while !(notesArray.isEmpty){
+    
+    override func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+        if (self.notesArray.count == 0) {return []}
+        let deleteButton = UITableViewRowAction(style: .default, title: "Delete") { (action, indexPath) in
+            self.tableView.dataSource?.tableView!(self.tableView, commit: .delete, forRowAt: indexPath)
+            return
+        }
+        deleteButton.backgroundColor = UIColor.gray
+        return [deleteButton]
+    }
+    
+   
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         //tableView.separatorColor = .gray
         //cellDeleteBackground.backgroundColor = UIColor.greenColor()
-         notesArray.remove(at: indexPath.row)
-        tableView.deleteRows(at: [indexPath], with: .automatic)
-       
+        notesArray.remove(at: indexPath.row)
+        if !(notesArray.isEmpty) {
+            tableView.deleteRows(at: [indexPath], with: .automatic)
+        }else{
+            tableView.reloadData()
+        }
+        saveData()
+
     }
-    
+    // }
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         //print("Clicked!")
         selectedItem = notesArray[indexPath.row]
+        selectedItem?.index = indexPath.row
         self.performSegue(withIdentifier: "editCell", sender: self)
     
     }
@@ -121,6 +142,22 @@ class MyNotesTableViewController: UITableViewController, NewEditDelegateProtocol
             vcEdit.delegate = self
             vcEdit.itemToEdit = selectedItem
         }
+        
+        
+        if (segue.identifier == "addNote"){
+            let vcNew  = (segue.destination as! NewOrEditViewController)
+            vcNew.delegate = self
+            vcNew.itemToEdit?.index = notesArray.count + 1
+        }
+        
+        if (segue.identifier == "newNoteSegue"){
+            let NewNoteVC = segue.destination as! NewOrEditViewController
+            NewNoteVC.delegate = self
+            //NewNoteVC.itemToEdit?.index = 0
+            
+             NewNoteVC.itemToEdit?.index = 0
+            // It can be also the same merged with the previus if
+        }
     }
     
     
@@ -130,59 +167,76 @@ class MyNotesTableViewController: UITableViewController, NewEditDelegateProtocol
     }
     
     
-//   override func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
-//       // tableView.deselectRow(at: indexPath, animated: true)
-//        tableView.deselectRow(at: indexPath, animated: false)
-//        return indexPath
-//    }
-//
-//    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-//        tableView.deselectRow(at: indexPath, animated: false)
-//    }
-
-    /*
-    // Override to support conditional editing of the table view.
-    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
-        return true
-    }
-    */
-
-    /*
-    // Override to support editing the table view.
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
-            // Delete the row from the data source
-            tableView.deleteRows(at: [indexPath], with: .fade)
-        } else if editingStyle == .insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }    
-    }
-    */
-
-    /*
-    // Override to support rearranging the table view.
-    override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
+    
+    func editExcistingNote(myObject: MyNotesClass) {
+        // print("editExcisting...")
+      notesArray[myObject.index!] = myObject
+      self.tableView.reloadData()
+        navigationController?.popViewController(animated: true)
+        saveData()
 
     }
-    */
-
-    /*
-    // Override to support conditional rearranging of the table view.
-    override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the item to be re-orderable.
-        return true
+    
+    
+    
+    func addNewNote(myObject: MyNotesClass) {
+        let RowIndex = notesArray.isEmpty ? 0: notesArray.count
+        if (notesArray.isEmpty){
+           notesArray.append(myObject)
+            tableView.reloadData()
+        }else{
+        notesArray.append(myObject)
+      //  self.tableView.reloadData() // insertRowAt
+       // tableView.beginUpdates()
+       let indexPath = IndexPath(row: RowIndex, section: 0)
+        //indexPath = [indexPath]
+       tableView.insertRows(at: [indexPath], with: .fade)
+      //  tableView.endUpdates()
+        }
+        navigationController?.popViewController(animated: true)
+        saveData()
+       // let indexpath = IndexPath(row: myObject.index!, section: 1)
     }
-    */
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+    
+    func DocumentDirectory() -> URL{
+        let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
+        return paths[0]
     }
-    */
+    func dataFilePath() -> URL{
+       
+        return DocumentDirectory().appendingPathComponent("Checklists.plist")
+    }
+    
+    
+    func saveData(){
+        let encoder = PropertyListEncoder()
+        do {
+            
+            let data = try encoder.encode(notesArray)
+           
+            try data.write(to: dataFilePath(),
+                           options: Data.WritingOptions.atomic)
+            print("Saved!")
+        }
+        catch {
+            print("Error while saving the data: \(error.localizedDescription)")
+            
+        }
+    }
+    
+    
+    func loadData(){
+        let paths = dataFilePath()
+        if  let data = try? Data(contentsOf: paths) {
+            let decoder = PropertyListDecoder()
+            do{
+                notesArray = try decoder.decode([MyNotesClass].self, from: data)
+            } catch {
+                print("Error decoding item array: \(error.localizedDescription)")
+            }
+        }
+    }
 
+    
+    
 }

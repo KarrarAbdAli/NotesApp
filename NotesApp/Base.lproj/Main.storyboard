@@ -44,7 +44,7 @@
                                             <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             <state key="normal" title="Create a note"/>
                                             <connections>
-                                                <segue destination="Vhi-TJ-ASg" kind="show" identifier="createNewNoteEmptyCellButton" id="vlf-Yg-LBE"/>
+                                                <segue destination="Vhi-TJ-ASg" kind="show" identifier="newNoteSegue" id="vlf-Yg-LBE"/>
                                             </connections>
                                         </button>
                                     </subviews>
@@ -97,7 +97,7 @@
                         <barButtonItem key="rightBarButtonItem" title="Item" image="icon-new" id="7f2-WK-3TT">
                             <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <connections>
-                                <segue destination="Vhi-TJ-ASg" kind="show" identifier="NewSegue" id="7TI-C8-ALR"/>
+                                <segue destination="Vhi-TJ-ASg" kind="show" identifier="addNote" id="7TI-C8-ALR"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
@@ -114,16 +114,8 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="603"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" tag="8" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3Ko-pS-YLG">
-                                <rect key="frame" x="16" y="80" width="343" height="21"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" red="0.99607843139999996" green="0.53268118669999998" blue="0.28951733730000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                             <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="e92-QX-am2">
-                                <rect key="frame" x="16" y="403" width="343" height="182"/>
+                                <rect key="frame" x="16" y="378" width="343" height="182"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <subviews>
                                     <button opaque="NO" tag="3" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BkU-6o-gZ5">
@@ -140,6 +132,9 @@
                                         <rect key="frame" x="0.0" y="8" width="83" height="80"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <state key="normal" title="Button" image="ButtonPicture"/>
+                                        <connections>
+                                            <action selector="addImageButtonClicked:" destination="Vhi-TJ-ASg" eventType="touchUpInside" id="G8U-7f-hav"/>
+                                        </connections>
                                     </button>
                                     <button opaque="NO" tag="4" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mVf-wW-W9c">
                                         <rect key="frame" x="0.0" y="94" width="83" height="80"/>
@@ -175,23 +170,36 @@
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </view>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" tag="7" contentMode="scaleToFill" fixedFrame="YES" text="Title" textAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="Rl3-3N-jAp">
+                                <rect key="frame" x="12" y="76" width="350" height="29"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" red="0.99607843139999996" green="0.53268118669999998" blue="0.28951733730000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            </textView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <viewLayoutGuide key="safeArea" id="scX-86-tKT"/>
                     </view>
                     <toolbarItems/>
                     <navigationItem key="navigationItem" title="Title" id="uFE-ZL-9dk">
-                        <barButtonItem key="rightBarButtonItem" title="Item" id="qsL-so-r6Q"/>
+                        <barButtonItem key="rightBarButtonItem" image="tick" id="qsL-so-r6Q">
+                            <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <connections>
+                                <action selector="done" destination="Vhi-TJ-ASg" id="gzJ-nC-IXH"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="textView" destination="IxJ-qa-Ydy" id="m2H-Uk-rr1"/>
-                        <outlet property="titleLabel" destination="3Ko-pS-YLG" id="cwC-3I-VTD"/>
+                        <outlet property="titleTextView" destination="Rl3-3N-jAp" id="C6d-5T-Lsj"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ugd-bd-Fig" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="730" y="-665"/>
+            <point key="canvasLocation" x="728.79999999999995" y="-665.21739130434787"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="oDN-Dn-czd">
@@ -201,6 +209,7 @@
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" translucent="NO" id="Urt-zk-ktW">
                         <rect key="frame" x="0.0" y="20" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
+                        <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <color key="barTintColor" red="0.99607843139999996" green="0.53268118669999998" blue="0.28951733730000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <textAttributes key="titleTextAttributes">
                             <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -220,8 +229,9 @@
         <image name="ButtonPicture" width="80" height="80"/>
         <image name="Robo.to" width="122" height="161"/>
         <image name="icon-new" width="24" height="24"/>
+        <image name="tick" width="33" height="24"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="zWB-wS-uKN"/>
+        <segue reference="7TI-C8-ALR"/>
     </inferredMetricsTieBreakers>
 </document>

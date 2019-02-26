@@ -8,10 +8,11 @@
 
 import Foundation
 
-class MyNotesClass : NSObject{
+class MyNotesClass : NSObject, Codable{
     
     var noteTitle:String = ""
     var noteText = ""
+    var index: Int? 
     
 }
 
