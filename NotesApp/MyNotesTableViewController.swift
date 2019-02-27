@@ -141,6 +141,7 @@ class MyNotesTableViewController: UITableViewController, NewEditDelegateProtocol
             let vcEdit  = (segue.destination as! NewOrEditViewController)
             vcEdit.delegate = self
             vcEdit.itemToEdit = selectedItem
+            vcEdit.loadingTheImages()
         }
         
         
@@ -148,6 +149,7 @@ class MyNotesTableViewController: UITableViewController, NewEditDelegateProtocol
             let vcNew  = (segue.destination as! NewOrEditViewController)
             vcNew.delegate = self
             vcNew.itemToEdit?.index = notesArray.count + 1
+            vcNew.loadingTheImages()
         }
         
         if (segue.identifier == "newNoteSegue"){
@@ -156,6 +158,7 @@ class MyNotesTableViewController: UITableViewController, NewEditDelegateProtocol
             //NewNoteVC.itemToEdit?.index = 0
             
              NewNoteVC.itemToEdit?.index = 0
+            NewNoteVC.loadingTheImages()
             // It can be also the same merged with the previus if
         }
     }
@@ -174,6 +177,7 @@ class MyNotesTableViewController: UITableViewController, NewEditDelegateProtocol
       self.tableView.reloadData()
         navigationController?.popViewController(animated: true)
         saveData()
+        
 
     }
     

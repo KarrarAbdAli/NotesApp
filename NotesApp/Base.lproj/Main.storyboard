@@ -122,11 +122,17 @@
                                         <rect key="frame" x="260" y="8" width="83" height="80"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <state key="normal" title="Button" image="ButtonPicture"/>
+                                        <connections>
+                                            <action selector="addImageButtonClicked:" destination="Vhi-TJ-ASg" eventType="touchUpInside" id="1U9-zd-DWX"/>
+                                        </connections>
                                     </button>
                                     <button opaque="NO" tag="2" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="320-U4-jHa">
                                         <rect key="frame" x="130" y="8" width="83" height="80"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <state key="normal" title="Button" image="ButtonPicture"/>
+                                        <connections>
+                                            <action selector="addImageButtonClicked:" destination="Vhi-TJ-ASg" eventType="touchUpInside" id="yDd-DV-0a0"/>
+                                        </connections>
                                     </button>
                                     <button opaque="NO" tag="1" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ue7-wK-gUP">
                                         <rect key="frame" x="0.0" y="8" width="83" height="80"/>
@@ -140,16 +146,25 @@
                                         <rect key="frame" x="0.0" y="94" width="83" height="80"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <state key="normal" title="Button" image="ButtonPicture"/>
+                                        <connections>
+                                            <action selector="addImageButtonClicked:" destination="Vhi-TJ-ASg" eventType="touchUpInside" id="Kap-GN-x7R"/>
+                                        </connections>
                                     </button>
                                     <button opaque="NO" tag="5" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5gT-ME-XOA">
                                         <rect key="frame" x="130" y="94" width="83" height="80"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <state key="normal" title="Button" image="ButtonPicture"/>
+                                        <connections>
+                                            <action selector="addImageButtonClicked:" destination="Vhi-TJ-ASg" eventType="touchUpInside" id="GQV-8J-9cp"/>
+                                        </connections>
                                     </button>
                                     <button opaque="NO" tag="6" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9ff-Fy-juX">
                                         <rect key="frame" x="260" y="94" width="83" height="80"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <state key="normal" title="Button" image="ButtonPicture"/>
+                                        <connections>
+                                            <action selector="addImageButtonClicked:" destination="Vhi-TJ-ASg" eventType="touchUpInside" id="gKz-Hs-uZx"/>
+                                        </connections>
                                     </button>
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
