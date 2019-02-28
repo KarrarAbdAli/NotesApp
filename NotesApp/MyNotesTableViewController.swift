@@ -87,7 +87,7 @@ class MyNotesTableViewController: UITableViewController, NewEditDelegateProtocol
             let titleLabel = cell?.viewWithTag(1001) as! UILabel
             
             titleLabel.text = "\(notesArray[indexPath.row].noteTitle)"
-            textLabel.text = " \(notesArray[indexPath.row].noteText)"
+            textLabel.text = "\(notesArray[indexPath.row].noteText)"
             
         }
         
@@ -141,7 +141,12 @@ class MyNotesTableViewController: UITableViewController, NewEditDelegateProtocol
             let vcEdit  = (segue.destination as! NewOrEditViewController)
             vcEdit.delegate = self
             vcEdit.itemToEdit = selectedItem
-            vcEdit.loadingTheImages()
+         //   vcEdit.loadingTheData()
+////            Here I am trying to send the data to the new screen to present the pictures in the buttons
+//            vcEdit.itemToEdit?.picturesUrls = selectedItem?.picturesUrls
+            
+            
+            
         }
         
         
@@ -149,7 +154,7 @@ class MyNotesTableViewController: UITableViewController, NewEditDelegateProtocol
             let vcNew  = (segue.destination as! NewOrEditViewController)
             vcNew.delegate = self
             vcNew.itemToEdit?.index = notesArray.count + 1
-            vcNew.loadingTheImages()
+         //   vcNew.loadingTheData()
         }
         
         if (segue.identifier == "newNoteSegue"){
@@ -158,19 +163,19 @@ class MyNotesTableViewController: UITableViewController, NewEditDelegateProtocol
             //NewNoteVC.itemToEdit?.index = 0
             
              NewNoteVC.itemToEdit?.index = 0
-            NewNoteVC.loadingTheImages()
+           // NewNoteVC.loadingTheData()
             // It can be also the same merged with the previus if
         }
     }
     
     
-    override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-        return UIView()
-        
-    }
+//    override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+//        return UIView()
+//
+//    }
     
     
-    
+//    Protocol delegate method
     func editExcistingNote(myObject: MyNotesClass) {
         // print("editExcisting...")
       notesArray[myObject.index!] = myObject

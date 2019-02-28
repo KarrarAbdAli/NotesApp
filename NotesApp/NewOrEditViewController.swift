@@ -31,7 +31,7 @@ class NewOrEditViewController : UIViewController, UINavigationControllerDelegate
     var imageTags : Int = 1
     
     
-    var imageDataKeys: [Int]?
+//    var imageDataKeys: [Int]?
     var buttons: [UIButton]?
     
     override func viewDidLoad() {
@@ -44,24 +44,39 @@ class NewOrEditViewController : UIViewController, UINavigationControllerDelegate
         
 //        for button in 0...5{
 //            buttons.append(view.viewWithTag(button) as! UIButton)
-//
-//        }
-        
-        // MARK: These declaration should be after checking if there is a data inside or not
         let imageButton1 = view.viewWithTag(1) as! UIButton
         let imageButton2 = view.viewWithTag(2) as! UIButton
         let imageButton3 = view.viewWithTag(3) as! UIButton
-
+        
         let imageButton4 = view.viewWithTag(4) as! UIButton
         let imageButton5 = view.viewWithTag(5) as! UIButton
         let imageButton6 = view.viewWithTag(6) as! UIButton
+//        }
+//        if itemToEdit?.picturesUrls?.isEmpty == true {
         
-        imageButton2.isHidden = true
-        imageButton3.isHidden = true
-        imageButton4.isHidden = true
-        imageButton5.isHidden = true
-        imageButton6.isHidden = true
         
+//        I have a problem in this code
+        
+        if let variable =  itemToEdit?.picturesUrls {
+//        if itemToEdit?.picturesUrls?.isEmpty == true{
+//            if the urls are empty, then we are adding not edditing so we will make the butons hidden
+           
+     
+             loadingTheData()
+            }else{
+            imageButton2.isHidden = true
+            imageButton3.isHidden = true
+            imageButton4.isHidden = true
+            imageButton5.isHidden = true
+            imageButton6.isHidden = true
+           }
+            
+//            if we do have urls, it means that we have a data of pictures so we will try to load them and make the buttons visible, it might be also possible to make the buttons hdden and show them or juse directly making them hidden from here
+        // MARK: These declaration should be after checking if there is a data inside or not
+        
+//        loadingTheData()
+       
+       
 //        if imageDataKeys != nil {
 //
 //            for items in imageDataKeys {
@@ -78,7 +93,8 @@ class NewOrEditViewController : UIViewController, UINavigationControllerDelegate
 //            // try to do somthing else if there was no pictures selected for the note
 //
 //        }
-        loadingTheImages()
+       // loadingTheImages()
+       // loadingTheData()
         
         //print(itemToEdit?.noteTitle)
        
@@ -102,7 +118,12 @@ class NewOrEditViewController : UIViewController, UINavigationControllerDelegate
         myObject.noteTitle = titleTextView.text
         myObject.noteText = textView.text
         myObject.index = itemToEdit?.index
-       
+        myObject.picturesUrls = itemToEdit?.picturesUrls
+        //******************I THINK I NEED TO PUT THE URLS HERE TO SEND THEM TO THE PREVIUS VIEWVONTROLLER TO SAVE THEM IN THE ARRAY WICH IN TERN WILL BE SAVED IN THE PLIST
+        
+//        myObject.picturesUrls
+        
+        
         if itemToEdit != nil {
         
         delegate?.editExcistingNote(myObject: myObject as! MyNotesClass)
@@ -130,14 +151,14 @@ class NewOrEditViewController : UIViewController, UINavigationControllerDelegate
         alert.addAction(UIAlertAction(title: NSLocalizedString("Choose From Library", comment: "Default action"), style: .default, handler: { _ in
             
             let image = UIImagePickerController()
-            image.delegate = self
+             image.delegate = self
             image.sourceType = UIImagePickerController.SourceType.photoLibrary
             
             image.allowsEditing = false
             self.present(image, animated: true){
                 //if we want to do sothing aftr presenting
                 
-                self.activateNextButton(nextButton: sender as! UIButton)
+//                self.activateNextButton(previousButton: sender as! UIButton)
             }
             
             
@@ -167,8 +188,13 @@ class NewOrEditViewController : UIViewController, UINavigationControllerDelegate
             image.allowsEditing = false
             self.present(image, animated: true){
                 //if we want to do sothing aftr presenting
-                self.activateNextButton(nextButton: sender as! UIButton)
+//               self.activateNextButton(previousButton: sender as! UIButton)
             }
+        
+            
+//             Here I should try to add a functionality of saving after presentin
+            
+            
             
             
             
@@ -222,26 +248,48 @@ class NewOrEditViewController : UIViewController, UINavigationControllerDelegate
         {
             let imageButton = view.viewWithTag(imageTags) as! UIButton
             
-            imageButton.setImage(image, for: .normal
-            )
+            imageButton.setImage(image, for: .normal)
+            
+            savingData(image: image)
             // Here I will try to save the image
             
-            let imageData: NSData =
-                image.pngData()! as NSData
+            
+            //I do not need this code to make the assignment to that variable I should do it in another way
+            //let imageData: NSData = image.pngData()! as NSData
             
         // Saved Image
+//      I think I should save the data after pressing the done button not after loading them from the labrary or camera as the user might make the chose wrong and will try to change it later
             
-            UserDefaults.standard.set(imageData, forKey: "\(imageTags)")
+   
             
-            imageDataKeys?.append(imageTags)
             
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            //OLD MARK
+//            UserDefaults.standard.set(imageData, forKey: "\(imageTags)")
+//
+//            imageDataKeys?.append(imageTags)
+//
             //print(imageData)
-            
-            
+          //Question, why I can not access to the class inside a methode or protocol, I am trying here to fix this bug
+            self.activateNextButton(previousButton: imageButton)
             
         }
         
         self.dismiss(animated: true, completion: nil)
+        
     }
     
     
@@ -249,55 +297,108 @@ class NewOrEditViewController : UIViewController, UINavigationControllerDelegate
     
     
     
-    func activateNextButton(nextButton senderButton: UIButton){
+    func activateNextButton(previousButton senderButton: UIButton){
         
         let imageButton = view.viewWithTag(senderButton.tag + 1)
         imageButton?.isHidden = false
-        imageTags = senderButton.tag
+        imageTags = senderButton.tag + 1
     }
     
     
     
-    
-    func loadingTheImages(){
-        
-            if imageDataKeys != nil {
-                
-                for items in imageDataKeys! {
-                    
-                    // Decoding and loading
-                    let data = UserDefaults.standard.object(forKey:"\(items)") as! NSData
-                    
-                    let imageButton = view.viewWithTag(items) as! UIButton
-                    
-                    
-                    let tempImage = UIImage(data: data as Data)
-                    imageButton.setImage(tempImage, for: .normal)
-                }
-                
-                
-            }
-            else
+    func savingData(image: UIImage){
+        let documentDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
 
-            {
+        
+        
+        let fileName = "\(imageTags)"//UUID().uuidString
+        
+        let fileURL = documentDirectory.appendingPathComponent(fileName)
+        
+         itemToEdit?.picturesUrls?.append(fileURL)
+        
+        
+        if let data = image.jpegData(compressionQuality: 0.5), !FileManager.default.fileExists(atPath: fileURL.path) {
+            do {
+                //writing the image data to disk
+                try data.write(to: fileURL)
                 
-                // try to do somthing else if there was no pictures selected for the note
-                
+                print("File Saved")
+                print(fileURL.absoluteString)
+               
             }
+            catch {
+                print("Error saving the file:,", error)
+            }
+        }
+    }
+    
+    
+    
+    
+    
+    
+    func loadingTheData(){
+        
+        /*let documentDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
+        let fileName = "\(imageTags)"
+        let fileURL = documentDirectory.appendingPathComponent(fileName)
+        
+
+        if let image = UIImage(contentsOfFile: fileURL.path) {
+            //UIImageView.contentMode = .scaleAspectFit
+            //imageView.image = image
             
-            
-            
-            
-            
-            
-   
+        }*/
         
         
+        
+        /*for (index, pictureUrl) in itemToEdit?.picturesUrls?.enumerated() ?? [].enumerated(){
+            (self.view.viewWithTag(index) as! UIButton).setImage( UIImage(contentsOfFile: pictureUrl.path), for: .normal)
+            
+        }*/
+        
+        for pictureUrl in itemToEdit?.picturesUrls ?? []{
+            print(pictureUrl)
+        }
         
         
         
         
     }
+    
+    
+    
+    
+   // THis functionn is not working so I need to change it.
+//    func loadingTheImages(){
+//
+//            if imageDataKeys != nil {
+//
+//                for items in imageDataKeys! {
+//
+//                    // Decoding and loading
+//                    let data = UserDefaults.standard.object(forKey:"\(items)") as! NSData
+//
+//                    let imageButton = view.viewWithTag(items) as! UIButton
+//
+//                   //  UIImage(contentsOfFile: <#T##String#>)
+//
+//                    let tempImage = UIImage(data: data as Data)
+//                    imageButton.setImage(tempImage, for: .normal)
+//                }
+//
+//
+//            }
+//            else
+//
+//            {
+//
+//                // try to do somthing else if there was no pictures selected for the note
+//
+//            }
+//
+//    }
     
     
 }
