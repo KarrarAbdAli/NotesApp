@@ -19,13 +19,10 @@ class MyNotesTableViewController: UITableViewController, NewEditDelegateProtocol
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = .white
-        
         //self.tableView.isScrollEnabled = false
         self.tableView.allowsSelection = true
        // self.tableView.isUserInteractionEnabled = true
-     loadData()
-        
-        
+             loadData()
         //Now Tring to save and load the adata
 //        let noteOne = MyNotesClass()
 //        noteOne.noteTitle = "note 1 Title"
@@ -37,9 +34,6 @@ class MyNotesTableViewController: UITableViewController, NewEditDelegateProtocol
 //
 //        notesArray = [noteOne, noteTwo]
 //----------------
-        
-        
-        
 //        notesArray.append(MyNotes) .noteTitle = "Title Note"
 //        notesArray[0].noteText = "some text of the note /n not so long max 2 line"
 //
@@ -154,6 +148,7 @@ class MyNotesTableViewController: UITableViewController, NewEditDelegateProtocol
             let vcNew  = (segue.destination as! NewOrEditViewController)
             vcNew.delegate = self
             vcNew.itemToEdit?.index = notesArray.count + 1
+          
          //   vcNew.loadingTheData()
         }
         
