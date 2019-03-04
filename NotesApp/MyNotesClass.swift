@@ -13,9 +13,10 @@ class MyNotesClass : NSObject, Codable{
     var noteTitle:String = ""
     var noteText = ""
     var index: Int?
+    var idNotes: String = ""
 //    let id = UUID().uuidString
     
-    var picturesUrls: [URL]?
+    var picturesUrls: [URL] = []
     
 }
 

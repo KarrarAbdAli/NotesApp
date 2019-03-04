@@ -12,58 +12,32 @@ class MyNotesTableViewController: UITableViewController, NewEditDelegateProtocol
    
     
 
-    var notesArray: [MyNotesClass] = [MyNotesClass]()
+    var notesArray: [MyNotesClass] = [MyNotesClass]() //to store the notes with properties
     
-    var selectedItem : MyNotesClass?
+    var selectedItem : MyNotesClass = MyNotesClass() // temporary file to store the current item and push it to the next ViewController
+    
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = .white
-        //self.tableView.isScrollEnabled = false
         self.tableView.allowsSelection = true
-       // self.tableView.isUserInteractionEnabled = true
+       
              loadData()
-        //Now Tring to save and load the adata
-//        let noteOne = MyNotesClass()
-//        noteOne.noteTitle = "note 1 Title"
-//        noteOne.noteText = "some text of the note \n not so long max 2 line"
-//        let noteTwo = MyNotesClass()
-//        noteTwo.noteTitle = "Note 2 Title"
-//        noteTwo.noteText = "some text of the note \n not so long max 2 line"
-//
-//
-//        notesArray = [noteOne, noteTwo]
-//----------------
-//        notesArray.append(MyNotes) .noteTitle = "Title Note"
-//        notesArray[0].noteText = "some text of the note /n not so long max 2 line"
-//
-//
-//        notesArray[1].noteText = "some text of the note 2 with also max 2 lines"
-//        notesArray[1].noteTitle = "Notes 2 title"
-
-//navigationBar?.background
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem
+       
     }
+    
+    
 
     // MARK: - Table view data source
-
     override func numberOfSections(in tableView: UITableView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
         return 1
     }
     
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
         return (notesArray.count == 0 ? 1:notesArray.count)
     }
-//    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-//        return 100
-//    }
 
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -84,19 +58,12 @@ class MyNotesTableViewController: UITableViewController, NewEditDelegateProtocol
             textLabel.text = "\(notesArray[indexPath.row].noteText)"
             
         }
-        
-       // Kresztof methode     cell.isUserInteractionEnabled=false
-        // Configure the cell...
-
         return cell!
     }
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return (notesArray.count == 0 ? 534.0 :200.0)
     }
-    
-    
-    //while !(notesArray.isEmpty){
     
     override func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
         if (self.notesArray.count == 0) {return []}
@@ -110,8 +77,6 @@ class MyNotesTableViewController: UITableViewController, NewEditDelegateProtocol
     
    
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-        //tableView.separatorColor = .gray
-        //cellDeleteBackground.backgroundColor = UIColor.greenColor()
         notesArray.remove(at: indexPath.row)
         if !(notesArray.isEmpty) {
             tableView.deleteRows(at: [indexPath], with: .automatic)
@@ -123,9 +88,10 @@ class MyNotesTableViewController: UITableViewController, NewEditDelegateProtocol
     }
     // }
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        //print("Clicked!")
+        
+        //selectedItem.index = indexPath.row
+     //selectedItem.idNotes = notesArray[indexPath.row].idNotes
         selectedItem = notesArray[indexPath.row]
-        selectedItem?.index = indexPath.row
         self.performSegue(withIdentifier: "editCell", sender: self)
     
     }
@@ -135,71 +101,93 @@ class MyNotesTableViewController: UITableViewController, NewEditDelegateProtocol
             let vcEdit  = (segue.destination as! NewOrEditViewController)
             vcEdit.delegate = self
             vcEdit.itemToEdit = selectedItem
+            vcEdit.segueName = "editCell"
          //   vcEdit.loadingTheData()
 ////            Here I am trying to send the data to the new screen to present the pictures in the buttons
 //            vcEdit.itemToEdit?.picturesUrls = selectedItem?.picturesUrls
-            
-            
-            
         }
         
         
         if (segue.identifier == "addNote"){
             let vcNew  = (segue.destination as! NewOrEditViewController)
             vcNew.delegate = self
-            vcNew.itemToEdit?.index = notesArray.count + 1
-          
-         //   vcNew.loadingTheData()
+            //vcNew.itemToEdit.index = notesArray.count
+          vcNew.segueName = "addNote"
+            //self.notesArray[]
+         
         }
         
         if (segue.identifier == "newNoteSegue"){
             let NewNoteVC = segue.destination as! NewOrEditViewController
             NewNoteVC.delegate = self
-            //NewNoteVC.itemToEdit?.index = 0
+            NewNoteVC.segueName = "newNoteSegue"
+
             
-             NewNoteVC.itemToEdit?.index = 0
-           // NewNoteVC.loadingTheData()
-            // It can be also the same merged with the previus if
+            
+           
         }
     }
     
-    
-//    override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-//        return UIView()
-//
-//    }
+
     
     
 //    Protocol delegate method
     func editExcistingNote(myObject: MyNotesClass) {
-        // print("editExcisting...")
-      notesArray[myObject.index!] = myObject
-      self.tableView.reloadData()
+        
+        for (index,note) in notesArray.enumerated() where note.idNotes == myObject.idNotes {
+            
+            notesArray[index] = myObject
+        }
         navigationController?.popViewController(animated: true)
+        tableView.reloadData()
         saveData()
         
-
+        //OLD CODE ----------------------
+        
+//        if notesArray.isEmpty{
+//            //array is empty so append
+//            notesArray.append(myObject)
+//        }else{
+//            notesArray[myObject.index!] = myObject
+//        }
+//
+//      self.tableView.reloadData()
+//        navigationController?.popViewController(animated: true)
+//        saveData()
+//        for note in notesArray where note.idnote == id
+//-------------------------------
     }
     
     
     
+    
     func addNewNote(myObject: MyNotesClass) {
-        let RowIndex = notesArray.isEmpty ? 0: notesArray.count
-        if (notesArray.isEmpty){
-           notesArray.append(myObject)
-            tableView.reloadData()
-        }else{
+        
         notesArray.append(myObject)
-      //  self.tableView.reloadData() // insertRowAt
-       // tableView.beginUpdates()
-       let indexPath = IndexPath(row: RowIndex, section: 0)
-        //indexPath = [indexPath]
-       tableView.insertRows(at: [indexPath], with: .fade)
-      //  tableView.endUpdates()
-        }
+        tableView.reloadData()
         navigationController?.popViewController(animated: true)
+        
         saveData()
-       // let indexpath = IndexPath(row: myObject.index!, section: 1)
+        
+    
+       //OLD CODE ------------------
+//        let RowIndex = notesArray.isEmpty ? 0: notesArray.count
+//        if (notesArray.isEmpty){
+//           notesArray.append(myObject)
+//            tableView.reloadData()
+//        }else{
+//        notesArray.append(myObject)
+//
+//       let indexPath = IndexPath(row: RowIndex, section: 0)
+//
+//       tableView.insertRows(at: [indexPath], with: .fade)
+//
+//        }
+//        navigationController?.popViewController(animated: true)
+//        saveData()
+//
+
+        //------------------
     }
     
     func DocumentDirectory() -> URL{
