@@ -14,6 +14,7 @@
 		C75359B6221FF2220049F162 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C75359B4221FF2220049F162 /* LaunchScreen.storyboard */; };
 		C75359BE221FF3350049F162 /* MyNotesTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C75359BD221FF3350049F162 /* MyNotesTableViewController.swift */; };
 		C75359C0222015EC0049F162 /* MyNotesClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = C75359BF222015EC0049F162 /* MyNotesClass.swift */; };
+		C7E33A72222E7BD70069F646 /* EditPictureViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7E33A71222E7BD70069F646 /* EditPictureViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,6 +27,7 @@
 		C75359B7221FF2220049F162 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C75359BD221FF3350049F162 /* MyNotesTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyNotesTableViewController.swift; sourceTree = "<group>"; };
 		C75359BF222015EC0049F162 /* MyNotesClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyNotesClass.swift; sourceTree = "<group>"; };
+		C7E33A71222E7BD70069F646 /* EditPictureViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditPictureViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -62,6 +64,7 @@
 				C75359BD221FF3350049F162 /* MyNotesTableViewController.swift */,
 				C75359BF222015EC0049F162 /* MyNotesClass.swift */,
 				C75359AF221FF2210049F162 /* Main.storyboard */,
+				C7E33A71222E7BD70069F646 /* EditPictureViewController.swift */,
 				C70256F02223D2CB0018E1C6 /* NewOrEditViewController.swift */,
 				C75359B2221FF2220049F162 /* Assets.xcassets */,
 				C75359B4221FF2220049F162 /* LaunchScreen.storyboard */,
@@ -144,6 +147,7 @@
 				C70256F12223D2CB0018E1C6 /* NewOrEditViewController.swift in Sources */,
 				C75359BE221FF3350049F162 /* MyNotesTableViewController.swift in Sources */,
 				C75359C0222015EC0049F162 /* MyNotesClass.swift in Sources */,
+				C7E33A72222E7BD70069F646 /* EditPictureViewController.swift in Sources */,
 				C75359AC221FF2210049F162 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -38,8 +38,6 @@ class MyNotesTableViewController: UITableViewController, NewEditDelegateProtocol
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return (notesArray.count == 0 ? 1:notesArray.count)
     }
-
-    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         var cell: UITableViewCell?
         if notesArray.count == 0 {
@@ -60,11 +58,9 @@ class MyNotesTableViewController: UITableViewController, NewEditDelegateProtocol
         }
         return cell!
     }
-    
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return (notesArray.count == 0 ? 534.0 :200.0)
     }
-    
     override func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
         if (self.notesArray.count == 0) {return []}
         let deleteButton = UITableViewRowAction(style: .default, title: "Delete") { (action, indexPath) in
@@ -74,8 +70,6 @@ class MyNotesTableViewController: UITableViewController, NewEditDelegateProtocol
         deleteButton.backgroundColor = UIColor.gray
         return [deleteButton]
     }
-    
-   
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         notesArray.remove(at: indexPath.row)
         if !(notesArray.isEmpty) {
@@ -86,13 +80,31 @@ class MyNotesTableViewController: UITableViewController, NewEditDelegateProtocol
         saveData()
 
     }
-    // }
+    
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
-        //selectedItem.index = indexPath.row
-     //selectedItem.idNotes = notesArray[indexPath.row].idNotes
         selectedItem = notesArray[indexPath.row]
-        self.performSegue(withIdentifier: "editCell", sender: self)
+
+        
+        let alert = UIAlertController(title: "Password", message: "Please Enter The Password to modify the note", preferredStyle: UIAlertController.Style.alert)
+        
+        alert.addTextField { (textfield) in
+        }
+        alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: { _ in
+            
+            if self.selectedItem.notePassword == alert.textFields?.first!.text!{
+                self.performSegue(withIdentifier: "editCell", sender: self)
+            }
+      
+        }))
+        self.present(alert, animated: true, completion: nil)
+        
+        
+        
+        
+        
+        
+        
+       
     
     }
     
@@ -102,9 +114,6 @@ class MyNotesTableViewController: UITableViewController, NewEditDelegateProtocol
             vcEdit.delegate = self
             vcEdit.itemToEdit = selectedItem
             vcEdit.segueName = "editCell"
-         //   vcEdit.loadingTheData()
-////            Here I am trying to send the data to the new screen to present the pictures in the buttons
-//            vcEdit.itemToEdit?.picturesUrls = selectedItem?.picturesUrls
         }
         
         
@@ -142,20 +151,6 @@ class MyNotesTableViewController: UITableViewController, NewEditDelegateProtocol
         tableView.reloadData()
         saveData()
         
-        //OLD CODE ----------------------
-        
-//        if notesArray.isEmpty{
-//            //array is empty so append
-//            notesArray.append(myObject)
-//        }else{
-//            notesArray[myObject.index!] = myObject
-//        }
-//
-//      self.tableView.reloadData()
-//        navigationController?.popViewController(animated: true)
-//        saveData()
-//        for note in notesArray where note.idnote == id
-//-------------------------------
     }
     
     
@@ -169,25 +164,6 @@ class MyNotesTableViewController: UITableViewController, NewEditDelegateProtocol
         
         saveData()
         
-    
-       //OLD CODE ------------------
-//        let RowIndex = notesArray.isEmpty ? 0: notesArray.count
-//        if (notesArray.isEmpty){
-//           notesArray.append(myObject)
-//            tableView.reloadData()
-//        }else{
-//        notesArray.append(myObject)
-//
-//       let indexPath = IndexPath(row: RowIndex, section: 0)
-//
-//       tableView.insertRows(at: [indexPath], with: .fade)
-//
-//        }
-//        navigationController?.popViewController(animated: true)
-//        saveData()
-//
-
-        //------------------
     }
     
     func DocumentDirectory() -> URL{

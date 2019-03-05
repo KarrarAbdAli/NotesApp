@@ -14,7 +14,22 @@ protocol NewEditDelegateProtocol: class {
     func addNewNote(myObject: MyNotesClass)
 }
 
-class NewOrEditViewController : UIViewController, UINavigationControllerDelegate, UIImagePickerControllerDelegate {
+class NewOrEditViewController : UIViewController, UINavigationControllerDelegate, UIImagePickerControllerDelegate, pictureDataDelegate {
+    func deletePicture(imageUrl: URL) {
+        removeImage(imageURL: imageUrl)
+        
+        navigationController?.popViewController(animated: true)
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
 
 
     
@@ -30,14 +45,60 @@ class NewOrEditViewController : UIViewController, UINavigationControllerDelegate
     
     var segueName: String = ""
     
-
+  //  var orginalImage: UIImage
     var buttons: [UIButton] = []
+    
+    
+    @IBOutlet weak var segmentedControl: UISegmentedControl!
+    
+    
+    
+    
+    
+ 
+    @IBAction func segmentedControlAction(_ sender: UISegmentedControl) {
+    
+        switch sender.selectedSegmentIndex {
+        case 0:
+            
+            
+            let alert = UIAlertController(title: "Password", message: "Plese Enter your Password", preferredStyle: UIAlertController.Style.alert)
+            
+            alert.addTextField { (textfield) in
+            }
+            alert.addAction(UIAlertAction(title: "Set Password", style: UIAlertAction.Style.default, handler: { _ in
+                
+                self.itemToEdit.notePassword = (alert.textFields?.first!.text!)!
+                
+                
+            }))
+            self.present(alert, animated: true, completion: nil)
+            
+            
+            
+        case 1:
+            break
+        default:
+            break
+        }
+        
+        
+    }
+  
+    
+    
+    
+    let imageDefult:UIImage = #imageLiteral(resourceName: "ButtonPicture")
+    
+    
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        
+        segmentedControl.selectedSegmentIndex = 1
+        //segmentedControl.value(forKey: "NO")
         loadButtonsInArray()
+        
         
        
         
@@ -75,12 +136,22 @@ class NewOrEditViewController : UIViewController, UINavigationControllerDelegate
             buttons[index].setImage(UIImage(contentsOfFile: pictureUrl.path), for: .normal)
             }
         }
+       // buttonsUpdate()
     }
 
+    func buttonsUpdate() {
+        let numberOfItems = itemToEdit.picturesUrls.count
+        let lowerBound =  numberOfItems + 1
+        for count in lowerBound...5{
+         buttons[count].isHidden = true
+        }
+    }
     
      
     
     @IBAction func done() {
+        
+        
         
         itemToEdit.noteText = textView.text
         itemToEdit.noteTitle = titleTextView.text
@@ -100,10 +171,37 @@ class NewOrEditViewController : UIViewController, UINavigationControllerDelegate
     }
     
     
+    
+
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        
+        
+        if (segue.identifier == "moveToPictureEditSegue"){
+            let vcEdit  = (segue.destination as! EditPictureViewController)
+            vcEdit.delegate = self
+            let imagePath = itemToEdit.picturesUrls[TAG_CLICKED - 100]
+            // let image = UIImage(contentsOfFile: imagePath.path)
+            //vcEdit.imageView.image = image!
+            vcEdit.imagePathURL = imagePath
+            
+        }
+        
+        
+    }
+    
     @IBAction func addImageButtonClicked(_ sender: Any) {
         
         
         TAG_CLICKED = (sender as! UIButton).tag
+        
+    let numberOfButtonsHasPictures = (itemToEdit.picturesUrls.count) * 100 // 100 because the tags starts with 100
+        
+        if ((TAG_CLICKED) <= numberOfButtonsHasPictures) {
+             performSegue(withIdentifier: "moveToPictureEditSegue", sender: self)
+        }
+        else {
+        
         
         let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
         alert.addAction(UIAlertAction(title: NSLocalizedString("Choose From Library", comment: "Default action"), style: .default, handler: { _ in
@@ -131,8 +229,7 @@ class NewOrEditViewController : UIViewController, UINavigationControllerDelegate
                
             }
         
-            
-            
+        
             
   
             
@@ -145,6 +242,7 @@ class NewOrEditViewController : UIViewController, UINavigationControllerDelegate
         
         
     }
+    }
    
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         if let image = info[UIImagePickerController.InfoKey.originalImage] as? UIImage
@@ -156,28 +254,12 @@ class NewOrEditViewController : UIViewController, UINavigationControllerDelegate
     
          
            savingData(image: image)
-            //self.activateNextButton(previousButton: imageButton)
-
             
         }
         
         self.dismiss(animated: true, completion: nil)
-        
+       // buttonsUpdate()
     }
-    
-    
-    
-    
-    
-    
-  /*  func activateNextButton(previousButton senderButton: UIButton){
-        
-        let imageButton = view.viewWithTag(senderButton.tag + 1)
-        imageButton?.isHidden = false
-        imageTags = senderButton.tag + 1
-    }*/
-    
-    
     
     func savingData(image: UIImage){
         let documentDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
@@ -193,7 +275,6 @@ class NewOrEditViewController : UIViewController, UINavigationControllerDelegate
         let isFileExist = FileManager.default.fileExists(atPath: fileURL.path)
         if let data = image.jpegData(compressionQuality: 1.0), !isFileExist {
             do {
-                //writing the image data to disk
                 try data.write(to: fileURL)
                 
                 print("File Saved")
@@ -206,12 +287,9 @@ class NewOrEditViewController : UIViewController, UINavigationControllerDelegate
         }else{
             print("not entering")
         }
+      //  buttonsUpdate()
     }
-    
-    
-    
-    
-    
+   
     
     func loadingTheData(){
         
@@ -228,12 +306,26 @@ class NewOrEditViewController : UIViewController, UINavigationControllerDelegate
     
         }
         
-        
-        
-        
     }
-}
-    
-    
-    
 
+    
+    
+    func removeImage(imageURL: URL){
+        var saveIndex: Int = 0
+        for (index, imageurl) in itemToEdit.picturesUrls.enumerated(){
+            if imageurl == imageURL{
+                
+          
+             try?  FileManager.default.removeItem(at: imageurl)
+            saveIndex = index
+        }
+              }
+       itemToEdit.picturesUrls.remove(at: saveIndex)
+        buttonsRefactoring(index: saveIndex)
+    }
+    
+    func buttonsRefactoring(index: Int){
+        buttons[index].setImage(imageDefult, for: .normal)
+    }
+    
+}

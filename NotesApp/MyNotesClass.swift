@@ -18,6 +18,7 @@ class MyNotesClass : NSObject, Codable{
     
     var picturesUrls: [URL] = []
     
+    var notePassword: String = ""
 }
 
 
