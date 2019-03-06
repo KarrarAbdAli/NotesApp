@@ -38,6 +38,7 @@ class MyNotesTableViewController: UITableViewController, NewEditDelegateProtocol
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return (notesArray.count == 0 ? 1:notesArray.count)
     }
+    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         var cell: UITableViewCell?
         if notesArray.count == 0 {
@@ -51,13 +52,19 @@ class MyNotesTableViewController: UITableViewController, NewEditDelegateProtocol
             cell = tableView.dequeueReusableCell(withIdentifier: "notesCell", for: indexPath)
             let textLabel = cell?.viewWithTag(1000) as! UILabel
             let titleLabel = cell?.viewWithTag(1001) as! UILabel
-            
+            if(notesArray[indexPath.row].notePassword != ""){
+                titleLabel.text = "<ENCRYPTED NOTE>"
+                textLabel.text = "Please enter the password to see the content"
+            }
+            else {
             titleLabel.text = "\(notesArray[indexPath.row].noteTitle)"
             textLabel.text = "\(notesArray[indexPath.row].noteText)"
+            }
             
         }
         return cell!
     }
+    
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return (notesArray.count == 0 ? 534.0 :200.0)
     }
@@ -84,7 +91,9 @@ class MyNotesTableViewController: UITableViewController, NewEditDelegateProtocol
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         selectedItem = notesArray[indexPath.row]
 
+        tableView.deselectRow(at: indexPath, animated: true)
         
+        if (notesArray[indexPath.row].notePassword != ""){
         let alert = UIAlertController(title: "Password", message: "Please Enter The Password to modify the note", preferredStyle: UIAlertController.Style.alert)
         
         alert.addTextField { (textfield) in
@@ -99,11 +108,15 @@ class MyNotesTableViewController: UITableViewController, NewEditDelegateProtocol
         self.present(alert, animated: true, completion: nil)
         
         
+            alert.addAction(UIAlertAction(title: "Cancel", style: UIAlertAction.Style.default, handler: nil))
+            
         
         
         
         
-        
+        } else{
+            self.performSegue(withIdentifier: "editCell", sender: self)
+        }
        
     
     }

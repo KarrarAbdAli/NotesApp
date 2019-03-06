@@ -15,6 +15,7 @@ protocol NewEditDelegateProtocol: class {
 }
 
 class NewOrEditViewController : UIViewController, UINavigationControllerDelegate, UIImagePickerControllerDelegate, pictureDataDelegate {
+   
     func deletePicture(imageUrl: URL) {
         removeImage(imageURL: imageUrl)
         
@@ -22,6 +23,12 @@ class NewOrEditViewController : UIViewController, UINavigationControllerDelegate
     }
     
     
+    @IBOutlet weak var but1: UIButton!
+    @IBOutlet weak var but2: UIButton!
+    @IBOutlet weak var but3: UIButton!
+    @IBOutlet weak var but4: UIButton!
+    @IBOutlet weak var but5: UIButton!
+    @IBOutlet weak var but6: UIButton!
     
     
     
@@ -95,9 +102,9 @@ class NewOrEditViewController : UIViewController, UINavigationControllerDelegate
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        segmentedControl.selectedSegmentIndex = 1
-        //segmentedControl.value(forKey: "NO")
+        segmentedControlPosition()
         loadButtonsInArray()
+        
         
         
        
@@ -123,6 +130,33 @@ class NewOrEditViewController : UIViewController, UINavigationControllerDelegate
     }
     
     
+//    @IBAction func sendEmail(_ sender: Any) {
+//        let email = "karrar.abdali@hemmersbach.com"
+//      
+//        let path = FileManager.default.url(forUbiquityContainerIdentifier: list.plist)//itemToEdit.noteTitle + itemToEdit.noteText//"/Users/myname/Desktop/report.txt"
+//        let fileURL = URL(fileURLWithPath: path)
+//        
+//        let sharingService = NSSharingService(named: NSSharingServiceNameComposeEmail)
+//        sharingService?.recipients = [email] //could be more than one
+//        sharingService?.subject = "subject"
+//        let items: [Any] = ["see attachment", fileURL] //the interesting part, here you add body text as well as URL for the document you'd like to share
+//        
+//        sharingService?.perform(withItems: items)
+//        
+//    }
+    
+    
+    
+    
+    
+    
+    
+    @IBAction func deletePassword(_ sender: Any) {
+        itemToEdit.notePassword = ""
+        segmentedControl.selectedSegmentIndex = 1
+
+    }
+    
     
     func loadButtonsInArray(){
         for index in 100...105{
@@ -131,13 +165,45 @@ class NewOrEditViewController : UIViewController, UINavigationControllerDelegate
     }
     
     func setupButtons(){
+        buttons.forEach { (buton) in
+            buton.isHidden = true
+        }
+        
+        
         for (index, pictureUrl) in itemToEdit.picturesUrls.enumerated() {
             if index < 6{
-            buttons[index].setImage(UIImage(contentsOfFile: pictureUrl.path), for: .normal)
+                buttons[index].isHidden = false
+                buttons[index].setImage(UIImage(contentsOfFile: pictureUrl.path), for: .normal)
+                
+                buttons[index].imageView?.layer.cornerRadius = (buttons[index].imageView?.frame.size.width)! / 2
+                buttons[index].imageView?.layer.borderWidth = 2.0
+                buttons[index].imageView?.contentMode = .scaleToFill
+                buttons[index].imageView?.layer.masksToBounds = true
+                buttons[index].imageView?.layer.borderColor = UIColor.orange.cgColor
+                
+                
             }
         }
+        
+        
+        buttons[itemToEdit.picturesUrls.count].isHidden = false
        // buttonsUpdate()
+        
+       
     }
+    
+    func segmentedControlPosition(){
+        if itemToEdit.notePassword == ""{
+            segmentedControl.selectedSegmentIndex = 1
+            
+        }
+        
+        else {
+            segmentedControl.selectedSegmentIndex = 0
+        }
+    }
+    
+    
 
     func buttonsUpdate() {
         let numberOfItems = itemToEdit.picturesUrls.count
@@ -254,7 +320,7 @@ class NewOrEditViewController : UIViewController, UINavigationControllerDelegate
     
          
            savingData(image: image)
-            
+            setupButtons()
         }
         
         self.dismiss(animated: true, completion: nil)
@@ -327,5 +393,20 @@ class NewOrEditViewController : UIViewController, UINavigationControllerDelegate
     func buttonsRefactoring(index: Int){
         buttons[index].setImage(imageDefult, for: .normal)
     }
+    
+    
+    
+//    func numberOfShowedButtons(){
+//        //var counter = 0
+//        for (index, pictureUrl) in itemToEdit.picturesUrls.enumerated(){
+//            //counter += 1
+//            buttons[index].isHidden = false
+//        }
+//        //var lowerLimit =
+////        for count in (counter + 1)...5{
+////            buttons[count].isHidden = true
+////        }
+//    }
+
     
 }
